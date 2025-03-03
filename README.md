@@ -1,2 +1,2 @@
-# 2024-Coding-Test
+# Coding-Test
 > coding test study repository
