@@ -1,8 +1,48 @@
 import sys
+from collections import deque
 
 input = sys.stdin.readline
 
 
+# 위상 정렬
+def solution2():
+    n = int(input())
+    names = list(input().split())
+    child, indegree = {name: [] for name in names}, {name: 0 for name in names}
+    m = int(input())
+    # 정보 저장
+    for _ in range(m):
+        a, b = input().split()
+        indegree[a] += 1  # 진입 차수 증가
+        child[b].append(a)
+
+    print(child, indegree)
+    # 루트 담기
+    q = deque([name for name in names if indegree[name] == 0])
+
+    # 루트 출력
+    print(len(q))
+    print(*sorted(q))
+
+    # 위상 정렬로 트리 구조 저장
+    result = []
+    while q:
+        node = q.popleft()
+        c = []
+        for next in child[node]:
+            indegree[next] -= 1
+            if indegree[next] == 0:
+                c.append(next)
+                q.append(next)
+
+        result.append([node, len(c), sorted(c)])
+
+    # 자식 출력
+    for parent, num, childs in sorted(result):
+        print(parent, num, *childs)
+
+
+# 딕셔너리 이용
 def solution():
     n = int(input())
     names = list(input().split())
@@ -37,4 +77,4 @@ def solution():
 
 
 if __name__ == "__main__":
-    solution()
+    solution2()
